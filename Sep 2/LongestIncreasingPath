@@ -1,1 +1,37 @@
-
+class Solution {
+    int[] row_dif={-1,0,1,0};
+    int[] col_dif={0,1,0,-1};
+    
+    public int longestIncreasingPath(int[][] matrix) {
+        int R=matrix.length,C=matrix[0].length;
+        int[][] dp=new int[R][C];
+        int max=0;
+        for(int r=0;r<R;r++){
+            for(int c=0;c<C;c++){
+                int cur=rec(dp,matrix,r,c,R,C);
+                max=Math.max(max,cur);
+            }
+        }
+        return max;
+        
+    }
+    public int rec(int[][] dp ,int[][] mat,int r,int c,int R,int C){
+        if(dp[r][c]!=0)return dp[r][c];
+        int curmax=0;
+        for(int di=0;di<4;di++){
+            int Rind=r+row_dif[di];
+            int Cind=c+col_dif[di];
+            if(Rind<0 || Rind>=R || Cind<0 || Cind>=C){
+                continue;
+            }
+            if(mat[Rind][Cind]>mat[r][c]){
+                int cur=rec(dp,mat,Rind,Cind,R,C);
+                curmax=Math.max(curmax,cur);
+            }
+            
+            
+        }
+        dp[r][c]=curmax+1;
+        return curmax+1;
+    }
+}
